@@ -9,3 +9,25 @@ settings:
     - /license
     - /logout
     - /changepassword
+
+# for 1.13+ (disable if below)
+# All changes required restart plugin
+hider:
+  enable: false
+  slot: 4 # 0-8
+  shown:
+    material: GRAY_DYE
+    name: "<green>Показать игроков"
+    sound:
+      enable: false
+      name: ENTITY_PLAYER_LEVELUP
+      pitch: 1.0
+      volume: 1.0
+  hidden:
+    material: LIME_DYE
+    name: "<red>Скрыть игроков"
+    sound:
+      enable: false
+      name: ENTITY_PLAYER_LEVELUP
+      pitch: 1.0
+      volume: 1.0

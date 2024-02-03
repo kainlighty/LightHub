@@ -8,6 +8,7 @@ import ru.kainlight.lighthub.COMMANDS.FlyCommand
 import ru.kainlight.lighthub.COMMANDS.GamemodeCommand
 import ru.kainlight.lighthub.COMMANDS.MainCommand
 import ru.kainlight.lighthub.COMMANDS.SpawnCommand
+import ru.kainlight.lighthub.LISTENERS.HideListener
 import ru.kainlight.lighthub.LISTENERS.PlayerListener
 import ru.kainlight.lighthub.UTILS.LightConfig
 import ru.kainlight.lighthub.UTILS.loadDefaultConfig
@@ -32,6 +33,8 @@ class Main : JavaPlugin() {
         loadDefaultConfig()
 
         this.registerListener(PlayerListener(this))
+        this.registerListener(HideListener(this))
+
         this.registerCommand("fly", FlyCommand(this))
         this.registerCommand("gm", GamemodeCommand(this))
         this.registerCommand("lighthub", MainCommand())
