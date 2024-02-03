@@ -1,0 +1,27 @@
+name: LightHub
+version: '${project.version}'
+main: ru.kainlight.lighthub.Main
+load: POSTWORLD
+
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin.version}
+
+softdepend:
+  - PlaceholderAPI
+
+commands:
+  gm:
+    aliases:
+      - gamemode
+  fly: { }
+  lighthub: { }
+
+permissions:
+  lighthub.drop:
+    default: op
+  lighthub.block.pickup:
+    default: op
+  lighthub.block.break:
+    default: op
+  lighthub.block.place:
+    default: op

@@ -1,0 +1,8 @@
+settings:
+  min-y: 0.0
+  speed: 7
+  allowed-commands:
+    - menu
+    - license
+    - logout
+    - changepassword

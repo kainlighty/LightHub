@@ -1,0 +1,6 @@
+join: |
+    Hi, $player
+    Welcome to the server!
+quit: |
+  Bye, $player
+  Good to se you!
