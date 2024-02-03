@@ -15,7 +15,9 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <kotlin.version>1.9.22</kotlin.version>
+        <kotlin.stdlib>kotlin-stdlib-jdk8</kotlin.stdlib>
     </properties>
 
     <build>
@@ -36,6 +38,10 @@
                                 <relocation>
                                     <pattern>net.kyori</pattern>
                                     <shadedPattern>${project.groupId}.shaded.net.kyori</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.jetbrains.kotlin</pattern>
+                                    <shadedPattern>${project.groupId}.shaded.org.jetbrains.kotlin</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -156,9 +162,9 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <artifactId>${kotlin.stdlib}</artifactId>
             <version>${kotlin.version}</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

@@ -25,43 +25,26 @@ fun setAudience(plugin: JavaPlugin) {
 }
 
 @Suppress("all")
-class LightPlayer(var sender: CommandSender) {
+class LightPlayer(private var sender: CommandSender) {
 
     fun sendHexMessage(message: String) {
         getAudience().sender(sender).sendMessage(Parser.hex(message))
     }
 
-    fun sendClickableHoverMessage(message: String?, hover: String, event: ClickEvent.Action?, action: String?) {
+    fun sendClickableMessage(message: String?, hover: String? = null, event: ClickEvent.Action?, action: String?) {
         if (message == null) return
 
         val component: Component = Parser.mini(message)
-        val component2: Component = Parser.mini(hover)
         val hoverComponent = component
             .clickEvent(ClickEvent.clickEvent(event!!, action!!))
-            .hoverEvent(HoverEvent.showText(component2))
+        if(hover != null) hoverComponent.hoverEvent(HoverEvent.showText(Parser.mini(hover)))
 
         getAudience().sender(sender).sendMessage(hoverComponent)
     }
 
-    fun sendClickableMessage(message: String?, event: ClickEvent.Action?, action: String?) {
-        if (message == null) return
-        var component: Component = Parser.mini(message)
-        component = component.clickEvent(ClickEvent.clickEvent(event!!, action!!))
-
-        getAudience().sender(sender).sendMessage(component)
-    }
-
-    fun sendMessage(component: Component?) {
-        if (component == null) return
-
-        getAudience().sender(sender).sendMessage(component)
-    }
-
     fun sendMessage(message: String?) {
-        if (message == null) return
-        val component: Component = Parser.mini(message)
-
-        getAudience().sender(sender).sendMessage(component)
+        if(message == null) return
+        getAudience().sender(sender).sendMessage(Parser.mini(message))
     }
 
     fun sendClearedMessage(message: String?) {
@@ -73,7 +56,8 @@ class LightPlayer(var sender: CommandSender) {
 
     fun sendMessage(message: List<String?>?) {
         if (message == null || message.isEmpty()) return
-        message.forEach(Consumer { this.sendMessage(it) })
+
+        message.forEach { this.sendMessage(it) }
     }
 
     fun sendActionbar(message: String?) {
@@ -92,23 +76,18 @@ class LightPlayer(var sender: CommandSender) {
         getAudience().sender(sender).sendMessage(hoverComponent)
     }
 
-    fun sendTitle(title: String, subtitle: String, fadeIn: Long, stay: Long, fadeOut: Long) {
+    fun sendTitle(title: String, subtitle: String, fadeIn: Long? = null, stay: Long? = null, fadeOut: Long? = null) {
         val titleComponent: Component = Parser.mini(title)
         val subtitleComponent: Component = Parser.mini(subtitle)
 
-        val times = Times.of(Duration.ofSeconds(fadeIn), Duration.ofSeconds(stay), Duration.ofSeconds(fadeOut))
-        val titleToSend = Title.title(titleComponent, subtitleComponent, times)
-
-        getAudience().sender(sender).showTitle(titleToSend)
-    }
-
-    fun sendTitle(title: String, subtitle: String) {
-        val titleComponent: Component = Parser.mini(title)
-        val subtitleComponent: Component = Parser.mini(subtitle)
-
-        val titleToSend = Title.title(titleComponent, subtitleComponent)
-
-        getAudience().sender(sender).showTitle(titleToSend)
+        if(fadeIn != null && stay != null && fadeOut != null) {
+            val times = Times.of(Duration.ofSeconds(fadeIn), Duration.ofSeconds(stay), Duration.ofSeconds(fadeOut))
+            val titleToSend = Title.title(titleComponent, subtitleComponent, times)
+            getAudience().sender(sender).showTitle(titleToSend)
+        } else {
+            val titleToSend = Title.title(titleComponent, subtitleComponent)
+            getAudience().sender(sender).showTitle(titleToSend)
+        }
     }
 
     fun clearTitle() {

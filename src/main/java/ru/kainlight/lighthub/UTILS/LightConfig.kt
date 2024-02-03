@@ -48,8 +48,10 @@ class LightConfig(private val plugin: Main, private val subdirectory: String?, p
     }
 
     fun getConfig(): FileConfiguration {
-        if (fileConfiguration == null) saveDefaultConfig()
-        return fileConfiguration!!
+        if (fileConfiguration == null) {
+            reloadConfig();
+        }
+        return fileConfiguration!!;
     }
 
     fun saveConfig() {

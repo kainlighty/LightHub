@@ -5,32 +5,28 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import ru.kainlight.lighthub.Main
+import ru.kainlight.lighthub.UTILS.LightPlayer
 
 class FlyCommand(private val plugin: Main) : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        if (!sender.hasPermission("lighthub.fly")) return true
-        if (sender !is Player) return true
+        if (!sender.hasPermission("lighthub.fly") || sender !is Player) return true
 
-        if (args.size == 1) {
-            if (!args[0].matches("\\d".toRegex())) {
-                val username = args[0]
-                val player = plugin.server.getPlayer(username) ?: return false
-                this.toggleFly(player)
-                return true;
-            } else {
-                sender.flySpeed = args[0].toFloat() / 10.0f
-                return true
-            }
+        val player: Player? = if (args.size == 1 && sender.hasPermission("lighthub.fly.other")) plugin.server.getPlayer(args[0]) else sender
+        player?.
+        let {
+            this.toggleFly(it)
+            return true;
+        } ?: run {
+            LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("player-not-found"))
+            return false
         }
-
-        this.toggleFly(sender)
-
-        return true
     }
 
     private fun toggleFly(player: Player): Boolean {
-        if (!player.allowFlight) {
+        val isFlying = player.allowFlight;
+
+        if (!isFlying) {
             player.allowFlight = true
             player.isFlying = true
             return true
@@ -39,5 +35,8 @@ class FlyCommand(private val plugin: Main) : CommandExecutor {
             player.isFlying = false
             return false
         }
+
+        LightPlayer.of(player).sendMessage(plugin.getMessages().getConfig().getString("fly")
+            ?.replace("{VALUE}", isFlying.toString()))
     }
 }

@@ -7,14 +7,13 @@ import org.bukkit.plugin.java.JavaPlugin
 import ru.kainlight.lighthub.COMMANDS.FlyCommand
 import ru.kainlight.lighthub.COMMANDS.GamemodeCommand
 import ru.kainlight.lighthub.COMMANDS.MainCommand
+import ru.kainlight.lighthub.COMMANDS.SpawnCommand
 import ru.kainlight.lighthub.LISTENERS.PlayerListener
 import ru.kainlight.lighthub.UTILS.LightConfig
 import ru.kainlight.lighthub.UTILS.loadDefaultConfig
 import ru.kainlight.lighthub.UTILS.setAudience
 
 class Main : JavaPlugin() {
-
-    private var s = "sdf";
 
     private var spawnConfig: LightConfig? = null
     private var messages: LightConfig? = null
@@ -36,6 +35,7 @@ class Main : JavaPlugin() {
         this.registerCommand("fly", FlyCommand(this))
         this.registerCommand("gm", GamemodeCommand(this))
         this.registerCommand("lighthub", MainCommand())
+        this.registerCommand("spawn", SpawnCommand())
     }
 
     override fun onDisable() {

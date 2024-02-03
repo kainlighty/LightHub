@@ -5,20 +5,28 @@ description: '${description}'
 main: ru.kainlight.lighthub.Main
 load: POSTWORLD
 
-libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin.version}
-
 softdepend:
   - PlaceholderAPI
 
 commands:
-  gm:
-    aliases:
-      - gamemode
+  gm: { }
   fly: { }
   lighthub: { }
+  spawn: { }
 
 permissions:
+  lighthub.gamemode:
+    default: op
+  lighthub.gamemode.other:
+    default: op
+  lighthub.fly:
+    default: op
+  lighthub.fly.other:
+    default: op
+  lighthub.spawn:
+    default: true
+  lighthub.spawn.create:
+    default: op
   lighthub.drop:
     default: op
   lighthub.block.pickup:

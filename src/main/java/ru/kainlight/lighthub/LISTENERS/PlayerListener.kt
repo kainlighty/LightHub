@@ -1,7 +1,5 @@
 package ru.kainlight.lighthub.LISTENERS
 
-import org.bukkit.Bukkit
-import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -19,14 +17,13 @@ class PlayerListener(private var plugin: Main) : Listener {
 
     @EventHandler
     fun onPlayerConnected(event: PlayerJoinEvent) {
-        event.joinMessage = null
+        plugin.getMessages().getConfig().getString("join")?.let { event.joinMessage = it }
         val player = event.player
-        player.health = 20.0
+        player.health = DEFAULT_HEALTH
 
-        val spawnLocation = this.getSpawnLocation()
-        if(player.location != spawnLocation) player.teleport(spawnLocation)
-
-        player.walkSpeed = DEFAULT_SPEED!! / 10.0f
+        SPAWN_LOCATION?.let { if(SPAWN_LOCATION != player.location) player.teleport(it) }
+        if(TOGGLE_FLY && player.hasPermission("lighthub.fly")) player.allowFlight = true
+        player.walkSpeed = DEFAULT_SPEED
     }
 
     @EventHandler
@@ -39,7 +36,9 @@ class PlayerListener(private var plugin: Main) : Listener {
     @EventHandler
     fun onVoid(event: PlayerMoveEvent) {
         if (event.player.isOp) return
-        if (event.player.location.y <= MIN_Y!!) event.player.teleport(this.getSpawnLocation())
+        if (event.player.location.y <= MIN_Y) {
+            SPAWN_LOCATION?.let { event.player.teleport(it) }
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -48,7 +47,7 @@ class PlayerListener(private var plugin: Main) : Listener {
 
         if (!player.hasPermission("lighthub.chat")) {
             event.isCancelled = true
-            LightPlayer.of(player).sendMessage(plugin.getMessages().getConfig().getString("chat"))
+            CANCEL_CHAT_MESSAGE?.let { if(it.isNotBlank()) LightPlayer.of(player).sendMessage(it) }
         }
     }
 
@@ -58,11 +57,11 @@ class PlayerListener(private var plugin: Main) : Listener {
 
         if (!player.isOp) {
             if(ALLOWED_COMMANDS.isEmpty()) return
-            val command = event.message.split(" ")[0].replace("/", "")
+            val command = event.message.split(" ")[0] // .replace("/", "")
 
             if (!ALLOWED_COMMANDS.contains(command)) {
-                event.setCancelled(true);
-                LightPlayer.of(player).sendMessage(plugin.getMessages().getConfig().getString("command-blocked"))
+                event.isCancelled = true;
+                CANCEL_CHAT_MESSAGE?.let { if(it.isNotBlank()) LightPlayer.of(player).sendMessage(it) }
             }
         }
     }
@@ -71,17 +70,15 @@ class PlayerListener(private var plugin: Main) : Listener {
     fun onPlayerDeathEvent(event: PlayerDeathEvent) {
         event.deathMessage = null
         event.drops.clear()
-        event.entity.player?.teleport(this.getSpawnLocation())
+
+        SPAWN_LOCATION?.let { event.entity.player?.teleport(it) ?: return }
     }
 
     @EventHandler
     fun onDropDisable(event: PlayerDropItemEvent) {
         val player = event.player
 
-        if (!player.hasPermission("lighthub.drop")) {
-            event.isCancelled = true
-            LightPlayer.of(player).sendMessage(plugin.getMessages().getConfig().getString("drop"))
-        }
+        if (!player.hasPermission("lighthub.drop")) event.isCancelled = true
     }
 
     @EventHandler
@@ -91,7 +88,6 @@ class PlayerListener(private var plugin: Main) : Listener {
         if (!player.hasPermission("lighthub.pickup")) {
             player.inventory.remove(event.item.itemStack)
             event.isCancelled = true
-            LightPlayer.of(player).sendMessage(plugin.getMessages().getConfig().getString("drop"))
         }
     }
 
@@ -116,20 +112,14 @@ class PlayerListener(private var plugin: Main) : Listener {
     fun onBreakBlocks(event: BlockBreakEvent) {
         val player = event.player
 
-        if (!player.hasPermission("lighthub.block.break")) {
-            event.isCancelled = true
-            LightPlayer.of(player).sendMessage(plugin.getMessages().getConfig().getString("breaking"))
-        }
+        if (!player.hasPermission("lighthub.block.break")) event.isCancelled = true
     }
 
     @EventHandler
     fun onPlaceBlocks(event: BlockPlaceEvent) {
         val player = event.player
 
-        if (!player.hasPermission("lighthub.block.place")) {
-            event.isCancelled = true
-            LightPlayer.of(player).sendMessage(plugin.getMessages().getConfig().getString("placing"))
-        }
+        if (!player.hasPermission("lighthub.block.place")) event.isCancelled = true
     }
 
     @EventHandler
@@ -142,19 +132,5 @@ class PlayerListener(private var plugin: Main) : Listener {
         event.isCancelled = true
     }
 
-    private fun getSpawnLocation(): Location {
-        val spawnSection = plugin.getSpawnConfig().getConfig();
 
-        val spawn = Location(
-            spawnSection.getString("world")?.let { Bukkit.getWorld(it) },
-            spawnSection.getDouble("x"),
-            spawnSection.getDouble("y"),
-            spawnSection.getDouble("z")
-        )
-
-        spawn.yaw = spawnSection.getInt("yaw").toFloat()
-        spawn.pitch = spawnSection.getInt("pitch").toFloat()
-
-        return spawn
-    }
 }

@@ -4,3 +4,9 @@ join: |
 quit: |
   Bye, $player
   Good to se you!
+
+player-not-found: "<bold><gold>СЕРВЕР:</bold> <white>Игрок не найден"
+
+gamemode: "<bold><gold>СЕРВЕР:</bold> <white>Игровой режим установлен на <gold>{VALUE}"
+fly: "<bold><gold>СЕРВЕР:</bold> <white>Игровой полёта установлен на <gold>{VALUE}"
+chat: "<bold><gold>СЕРВЕР:</bold> <white>Вам запрещено писать в чат"

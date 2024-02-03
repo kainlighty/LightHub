@@ -1,8 +1,11 @@
 settings:
+  toggle-fly: false
+  health: 20.0
   min-y: 0.0
-  speed: 7
+  speed: 7.0
   allowed-commands:
-    - menu
-    - license
-    - logout
-    - changepassword
+    - /spawn
+    - /menu
+    - /license
+    - /logout
+    - /changepassword
