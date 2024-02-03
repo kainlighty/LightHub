@@ -1,6 +1,5 @@
 package ru.kainlight.lighthub
 
-import lombok.Getter
 import org.bukkit.command.CommandExecutor
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
@@ -13,8 +12,9 @@ import ru.kainlight.lighthub.UTILS.LightConfig
 import ru.kainlight.lighthub.UTILS.loadDefaultConfig
 import ru.kainlight.lighthub.UTILS.setAudience
 
-@Getter
 class Main : JavaPlugin() {
+
+    private var s = "sdf";
 
     private var spawnConfig: LightConfig? = null
     private var messages: LightConfig? = null

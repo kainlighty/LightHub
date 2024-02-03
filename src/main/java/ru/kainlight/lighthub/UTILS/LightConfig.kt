@@ -6,6 +6,7 @@ import ru.kainlight.lighthub.Main
 import java.io.File
 import java.io.IOException
 
+@Suppress("all")
 class LightConfig(private val plugin: Main, private val subdirectory: String?, private val fileName: String) {
     private var configFile: File? = null
     private var fileConfiguration: FileConfiguration? = null

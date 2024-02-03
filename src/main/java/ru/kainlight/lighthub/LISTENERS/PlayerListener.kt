@@ -14,6 +14,7 @@ import org.bukkit.event.player.*
 import ru.kainlight.lighthub.Main
 import ru.kainlight.lighthub.UTILS.*
 
+@Suppress("all")
 class PlayerListener(private var plugin: Main) : Listener {
 
     @EventHandler

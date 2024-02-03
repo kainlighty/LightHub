@@ -1,5 +1,7 @@
 name: LightHub
 version: '${project.version}'
+description: '${description}'
+
 main: ru.kainlight.lighthub.Main
 load: POSTWORLD
 

@@ -24,7 +24,7 @@ fun setAudience(plugin: JavaPlugin) {
     AUDIENCE = BukkitAudiences.create(plugin);
 }
 
-@Suppress("unused")
+@Suppress("all")
 class LightPlayer(var sender: CommandSender) {
 
     fun sendHexMessage(message: String) {
