@@ -13,6 +13,8 @@ commands:
   fly: { }
   lighthub: { }
   spawn: { }
+  hide: {}
+  show: {}
 
 permissions:
   lighthub.gamemode:

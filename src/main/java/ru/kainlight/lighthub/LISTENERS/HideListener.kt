@@ -11,7 +11,10 @@ import ru.kainlight.lighthub.UTILS.ItemBuilder
 
 class HideListener(private val plugin: Main) : Listener {
 
-    var ENABLED: Boolean = Main.getInstance().config.getBoolean("hider.enable", false)
+    companion object{
+        var ENABLED: Boolean = Main.getInstance().config.getBoolean("hider.enable", false)
+    }
+
     private val SLOT: Int = plugin.config.getInt("hider.slot", 4)
 
     private val HIDDEN_SOUND_ENABLED = plugin.config.getBoolean("hider.hidden.sound.enabled", false)

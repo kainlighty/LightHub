@@ -4,10 +4,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
-import ru.kainlight.lighthub.COMMANDS.FlyCommand
-import ru.kainlight.lighthub.COMMANDS.GamemodeCommand
-import ru.kainlight.lighthub.COMMANDS.MainCommand
-import ru.kainlight.lighthub.COMMANDS.SpawnCommand
+import ru.kainlight.lighthub.COMMANDS.*
 import ru.kainlight.lighthub.LISTENERS.HideListener
 import ru.kainlight.lighthub.LISTENERS.PlayerListener
 import ru.kainlight.lighthub.UTILS.LightConfig
@@ -39,6 +36,11 @@ class Main : JavaPlugin() {
         this.registerCommand("gm", GamemodeCommand(this))
         this.registerCommand("lighthub", MainCommand())
         this.registerCommand("spawn", SpawnCommand())
+
+        if(!HideListener.ENABLED) {
+            this.registerCommand("hide", HideCommand())
+            this.registerCommand("show", ShowCommand())
+        }
     }
 
     override fun onDisable() {

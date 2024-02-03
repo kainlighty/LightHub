@@ -10,10 +10,10 @@ settings:
     - /logout
     - /changepassword
 
-# for 1.13+ (disable if below)
 # All changes required restart plugin
+# If disabled, the following commands are available: "/hide", "/show"
 hider:
-  enable: false
+  enable: false # for 1.13+ (disable if below)
   slot: 4 # 0-8
   shown:
     material: GRAY_DYE
