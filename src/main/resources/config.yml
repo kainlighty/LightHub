@@ -1,5 +1,7 @@
 settings:
-  toggle-fly: false
+  join-message: false
+  quit-message: false
+  toggle-fly: true
   health: 20.0
   min-y: 0.0
   speed: 7.0
@@ -9,6 +11,8 @@ settings:
     - /license
     - /logout
     - /changepassword
+    - /hide
+    - /show
 
 # All changes required restart plugin
 # If disabled, the following commands are available: "/hide", "/show"
@@ -17,17 +21,17 @@ hider:
   slot: 4 # 0-8
   shown:
     material: GRAY_DYE
-    name: "<green>Показать игроков"
+    name: "&aПоказать игроков"
     sound:
       enable: false
       name: ENTITY_PLAYER_LEVELUP
       pitch: 1.0
-      volume: 1.0
+      volume: 0.5
   hidden:
     material: LIME_DYE
-    name: "<red>Скрыть игроков"
+    name: "&7Скрыть игроков"
     sound:
       enable: false
       name: ENTITY_PLAYER_LEVELUP
       pitch: 1.0
-      volume: 1.0
+      volume: 0.5

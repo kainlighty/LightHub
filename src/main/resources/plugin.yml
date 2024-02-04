@@ -1,6 +1,7 @@
 name: LightHub
 version: '${project.version}'
 description: '${description}'
+api-version: 1.13
 
 main: ru.kainlight.lighthub.Main
 load: POSTWORLD
@@ -9,26 +10,49 @@ softdepend:
   - PlaceholderAPI
 
 commands:
-  gm: { }
-  fly: { }
+  lightgm:
+    aliases:
+      - gm
+  lightfly:
+    aliases:
+      - fly
+  lightspeed:
+    aliases:
+      - speed
   lighthub: { }
-  spawn: { }
+  lightspawn:
+    aliases:
+      - spawn
   hide: {}
   show: {}
 
 permissions:
-  lighthub.gamemode:
+  lighthub.visibility:
+    default: true
+  lighthub.gm:
     default: op
   lighthub.gamemode.other:
     default: op
+    children:
+      lighthub.gm: true
   lighthub.fly:
     default: op
   lighthub.fly.other:
     default: op
+    children:
+      lighthub.fly: true
+  lighthub.speed:
+    default: op
+  lighthub.speed.other:
+    default: op
+    children:
+      lighthub.speed: true
   lighthub.spawn:
     default: true
   lighthub.spawn.create:
     default: op
+    children:
+      lighthub.spawn: true
   lighthub.drop:
     default: op
   lighthub.block.pickup:

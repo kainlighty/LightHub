@@ -1,12 +1,8 @@
-join: |
-    Hi, $player
-    Welcome to the server!
-quit: |
-  Bye, $player
-  Good to se you!
+hider:
+  hidden: "<bold><red>HUB:</bold> <white>All players hidden"
+  shown: "<bold><red>HUB:</bold> <white>All players shown"
 
-player-not-found: "<bold><gold>СЕРВЕР:</bold> <white>Игрок не найден"
-
-gamemode: "<bold><gold>СЕРВЕР:</bold> <white>Игровой режим установлен на <gold>{VALUE}"
-fly: "<bold><gold>СЕРВЕР:</bold> <white>Игровой полёта установлен на <gold>{VALUE}"
-chat: "<bold><gold>СЕРВЕР:</bold> <white>Вам запрещено писать в чат"
+player-not-found: "<bold><red>HUB:</bold> <white>Player not found"
+gamemode: "<bold><red>HUB:</bold> <white>The gamemode is set to <gold>{VALUE} <gray>({PLAYER})"
+fly: "<bold><red>HUB:</bold> <white>Flight mode is set to <gold>{VALUE} <gray>({PLAYER})"
+chat: "<bold><red>HUB:</bold> <white>You are not allowed to write to the chat"

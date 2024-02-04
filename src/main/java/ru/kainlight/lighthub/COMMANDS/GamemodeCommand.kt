@@ -13,25 +13,26 @@ import java.util.*
 class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        if (sender !is Player || !sender.hasPermission("lighthub.gamemode")) return false
+        if (sender !is Player || !sender.hasPermission("lighthub.gm")) return false
+        if(args.isEmpty()) return false;
 
-        val value: Int = args[0].toInt();
-        if (args.size == 3 && sender.hasPermission("lighthub.gamemode.other")) {
+        val value: Int = args[0].toIntOrNull() ?: return false;
+        if (args.size == 2 && sender.hasPermission("lighthub.gm.other")) {
             plugin.server.getPlayer(args[1])?.
             let {
-                this.setGameMode(it, value)
+                this.setGameMode(sender, it, value)
                 return true;
             } ?: run {
                 LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("player-not-found"))
                 return false
             }
-        } else {
-            this.setGameMode(sender, value)
+        } else if (args.size == 1) {
+            this.setGameMode(sender, sender, value)
             return true
-        }
+        } else return false;
     }
 
-    private fun setGameMode(player: Player, gamemode: Int): Unit {
+    private fun setGameMode(sender: CommandSender, player: Player, gamemode: Int): Unit {
         when (gamemode) {
             0 -> player.setGameMode(GameMode.SURVIVAL)
             1 -> player.setGameMode(GameMode.CREATIVE)
@@ -39,12 +40,13 @@ class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter 
             3 -> player.setGameMode(GameMode.SPECTATOR)
         }
 
-        LightPlayer.of(player).sendMessage(plugin.getMessages().getConfig().getString("gamemode")
-            ?.replace("{VALUE}", player.gameMode.name))
+        LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("gamemode")
+            ?.replace("{VALUE}", player.gameMode.name)
+            ?.replace("{PLAYER}", player.name))
     }
 
     override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<String>): MutableList<String>? {
-        if(args.size == 1 && sender.hasPermission("lighthub.gamemode")) {
+        if(args.size == 1 && sender.hasPermission("lighthub.gm")) {
             return mutableListOf("0", "1", "2", "3")
         }
 

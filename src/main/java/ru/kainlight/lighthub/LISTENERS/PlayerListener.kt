@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.*
 import org.bukkit.event.player.*
+import ru.kainlight.lighthub.COMMANDS.FlyCommand
 import ru.kainlight.lighthub.Main
 import ru.kainlight.lighthub.UTILS.*
 
@@ -17,20 +18,24 @@ class PlayerListener(private var plugin: Main) : Listener {
 
     @EventHandler
     fun onPlayerConnected(event: PlayerJoinEvent) {
-        plugin.getMessages().getConfig().getString("join")?.let { event.joinMessage = it }
+        if(!JOIN_MESSAGE_ENABLED) event.joinMessage = null
+
         val player = event.player
         player.health = DEFAULT_HEALTH
 
         SPAWN_LOCATION?.let { if(SPAWN_LOCATION != player.location) player.teleport(it) }
-        if(TOGGLE_FLY && player.hasPermission("lighthub.fly")) player.allowFlight = true
+        FlyCommand.toggleFly(plugin, player, player,TOGGLE_FLY && player.hasPermission("lighthub.fly"))
         player.walkSpeed = DEFAULT_SPEED
     }
 
     @EventHandler
     fun onPlayerDisconnectEvent(event: PlayerQuitEvent) {
-        plugin.getMessages().getConfig().getString("quit")?.let { event.quitMessage = it }
+        if(!QUIT_MESSAGE_ENABLED) event.quitMessage = null
 
-        if(CLEAR_INVENTORY_ON_EXIT) event.player.inventory.clear()
+        val player = event.player
+        plugin.getMessages().getConfig().getString("quit")?.let { event.quitMessage = it.replace("{VALUE}", player.name) }
+
+        if(CLEAR_INVENTORY_ON_EXIT) player.inventory.clear()
     }
 
     @EventHandler

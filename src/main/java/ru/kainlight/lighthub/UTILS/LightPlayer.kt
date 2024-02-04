@@ -102,6 +102,13 @@ class LightPlayer(private var sender: CommandSender) {
         getAudience().sender(sender).hideBossBar(bossBar!!)
     }
 
+    fun playSound(sound: Sound?, volume: Float = 1f, pitch: Float = 1f) {
+        if (sound == null) return
+        val sender: Player = this.sender as Player
+
+        sender.playSound(sender.location, sound, volume, pitch)
+    }
+
     companion object {
         fun of(sender: CommandSender): LightPlayer {
             return LightPlayer(sender)

@@ -1,4 +1,4 @@
-package ru.kainlight.lighthub.UTILS;
+package ru.kainlight.lighthub.UTILS.JAVA;
 
 import lombok.NoArgsConstructor;
 import org.bukkit.Color;
@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import ru.kainlight.lighthub.UTILS.Parser;
 
 import javax.annotation.Nonnegative;
 import java.util.*;
@@ -62,6 +63,11 @@ public final class ItemBuilder {
 
     public ItemBuilder(@NotNull Material material) {
         this.material = material;
+        this.amount = 1;
+    }
+
+    public ItemBuilder(@NotNull String materialName) {
+        this.material = Material.valueOf(materialName);
         this.amount = 1;
     }
 

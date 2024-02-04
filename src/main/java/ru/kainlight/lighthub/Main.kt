@@ -1,7 +1,6 @@
 package ru.kainlight.lighthub
 
 import org.bukkit.command.CommandExecutor
-import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import ru.kainlight.lighthub.COMMANDS.*
@@ -30,7 +29,6 @@ class Main : JavaPlugin() {
         loadDefaultConfig()
 
         this.registerListener(PlayerListener(this))
-        this.registerListener(HideListener(this))
 
         this.registerCommand("fly", FlyCommand(this))
         this.registerCommand("gm", GamemodeCommand(this))
@@ -40,12 +38,9 @@ class Main : JavaPlugin() {
         if(!HideListener.ENABLED) {
             this.registerCommand("hide", HideCommand())
             this.registerCommand("show", ShowCommand())
+        } else {
+            this.registerListener(HideListener(this))
         }
-    }
-
-    override fun onDisable() {
-        HandlerList.unregisterAll(this)
-        this.server.scheduler.cancelTasks(this)
     }
 
     fun registerListener(listener: Listener) {
@@ -69,5 +64,7 @@ class Main : JavaPlugin() {
         @JvmStatic fun getInstance() : Main {
             return instance;
         }
+
+        fun isInteger(str: String?) = str?.toIntOrNull()?.let { true } ?: false
     }
 }
