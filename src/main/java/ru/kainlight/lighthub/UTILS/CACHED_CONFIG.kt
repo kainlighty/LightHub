@@ -29,12 +29,12 @@ fun loadDefaultConfig() {
 
     JOIN_MESSAGE_ENABLED = config.getBoolean("join-message")
     QUIT_MESSAGE_ENABLED = config.getBoolean("quit-message")
-    CLEAR_INVENTORY_ON_EXIT = config.getBoolean("clear-inventory-on-exit")
-    TOGGLE_FLY = config.getBoolean("toggle-fly")
-    DEFAULT_SPEED = config.getLong("settings.speed") / 10.0f
-    MIN_Y = config.getDouble("settings.min-y")
+    CLEAR_INVENTORY_ON_EXIT = config.getBoolean("clear-inventory-on-exit", false)
+    TOGGLE_FLY = config.getBoolean("toggle-fly", false)
+    DEFAULT_SPEED = config.getLong("settings.speed", 1) / 10.0f
+    MIN_Y = config.getDouble("settings.min-y", 0.0)
     ALLOWED_COMMANDS = config.getStringList("settings.allowed-commands")
-    DEFAULT_HEALTH = config.getDouble("settings.health")
+    DEFAULT_HEALTH = config.getDouble("settings.health", 20.0)
 
     val spawnSection = Main.getInstance().getSpawnConfig().getConfig();
     spawnSection.getString("world")?.let {

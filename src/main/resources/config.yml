@@ -1,7 +1,7 @@
 settings:
   join-message: false
   quit-message: false
-  toggle-fly: true
+  toggle-fly: true # auto fly mode when join if player has permission "lighthub.fly"
   health: 20.0
   min-y: 0.0
   speed: 7.0

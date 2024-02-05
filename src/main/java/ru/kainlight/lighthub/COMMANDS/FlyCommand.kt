@@ -14,7 +14,7 @@ class FlyCommand(private val plugin: Main) : CommandExecutor {
 
         val player: Player? = if (args.size == 1 && sender.hasPermission("lighthub.fly.other")) plugin.server.getPlayer(args[0]) else sender
         player?.let {
-            toggleFly(plugin, sender, it)
+            this.toggleFly(plugin, sender, it)
             return true;
         } ?: run {
             LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("player-not-found"))
@@ -22,20 +22,18 @@ class FlyCommand(private val plugin: Main) : CommandExecutor {
         }
     }
 
-    companion object {
-        fun toggleFly(plugin: Main, sender: CommandSender, player: Player, instant: Boolean? = null): Boolean {
-            if (!player.allowFlight || instant == true) {
-                player.allowFlight = true
-                player.isFlying = true
-            } else {
-                player.allowFlight = false
-                player.isFlying = false
-            }
-
-            LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("fly")
-                ?.replace("{VALUE}", player.isFlying.toString())
-                ?.replace("{PLAYER}", player.name))
-            return player.allowFlight
+    fun toggleFly(plugin: Main, sender: CommandSender, player: Player, instant: Boolean? = null): Boolean {
+        if (!player.allowFlight || instant == true) {
+            player.allowFlight = true
+            player.isFlying = true
+        } else {
+            player.allowFlight = false
+            player.isFlying = false
         }
+
+        LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("fly")
+            ?.replace("{VALUE}", player.isFlying.toString())
+            ?.replace("{PLAYER}", player.name))
+        return player.allowFlight
     }
 }

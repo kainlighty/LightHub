@@ -24,8 +24,12 @@ class PlayerListener(private var plugin: Main) : Listener {
         player.health = DEFAULT_HEALTH
 
         SPAWN_LOCATION?.let { if(SPAWN_LOCATION != player.location) player.teleport(it) }
-        FlyCommand.toggleFly(plugin, player, player,TOGGLE_FLY && player.hasPermission("lighthub.fly"))
+
         player.walkSpeed = DEFAULT_SPEED
+        if(TOGGLE_FLY && player.hasPermission("lighthub.fly")) {
+            player.allowFlight = true
+            player.isFlying = true
+        }
     }
 
     @EventHandler
