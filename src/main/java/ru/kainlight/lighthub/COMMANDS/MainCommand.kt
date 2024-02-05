@@ -9,13 +9,17 @@ import ru.kainlight.lighthub.UTILS.LightPlayer
 class MainCommand : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if(!sender.isOp) return true;
+        if(!sender.hasPermission("lighthub.*")) return true;
 
-        Main.getInstance().reloadConfig()
-        Main.getInstance().getSpawnConfig().reloadConfig()
-        Main.getInstance().getMessages().reloadConfig()
+        if(args.size == 1 && args[0] == "reload") {
+            Main.getInstance().reloadConfig()
+            Main.getInstance().getMessages().reloadConfig()
+            Main.getInstance().getSpawnConfig().reloadConfig()
 
-        LightPlayer.of(sender).sendMessage("<red>Configurations reloaded")
-        return true;
+            LightPlayer.of(sender).sendMessage(Main.getInstance().config.getString("reload"))
+            return true;
+        }
+
+        return false
     }
 }

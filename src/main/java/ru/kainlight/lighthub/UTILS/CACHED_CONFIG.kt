@@ -37,15 +37,20 @@ fun loadDefaultConfig() {
     DEFAULT_HEALTH = config.getDouble("settings.health")
 
     val spawnSection = Main.getInstance().getSpawnConfig().getConfig();
-    val world = spawnSection.getString("world") ?: "world"
-    val spawn = Location(
-        Bukkit.getWorld(world),
-        spawnSection.getDouble("x"),
-        spawnSection.getDouble("y"),
-        spawnSection.getDouble("z")
-    )
-    spawn.yaw = spawnSection.getInt("yaw").toFloat()
-    spawn.pitch = spawnSection.getInt("pitch").toFloat()
+    spawnSection.getString("world")?.let {
+        if(it == "null") {
+            Main.getInstance().logger.warning("World is null in config.yml")
+        } else {
+            val spawn = Location(
+                Bukkit.getWorld(it),
+                spawnSection.getDouble("x"),
+                spawnSection.getDouble("y"),
+                spawnSection.getDouble("z")
+            )
+            spawn.yaw = spawnSection.getInt("yaw").toFloat()
+            spawn.pitch = spawnSection.getInt("pitch").toFloat()
 
-    SPAWN_LOCATION = spawn;
+            SPAWN_LOCATION = spawn;
+        }
+    }
 }

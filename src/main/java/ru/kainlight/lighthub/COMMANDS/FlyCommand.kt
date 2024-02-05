@@ -13,13 +13,12 @@ class FlyCommand(private val plugin: Main) : CommandExecutor {
         if (!sender.hasPermission("lighthub.fly") || sender !is Player) return true
 
         val player: Player? = if (args.size == 1 && sender.hasPermission("lighthub.fly.other")) plugin.server.getPlayer(args[0]) else sender
-        player?.
-        let {
+        player?.let {
             toggleFly(plugin, sender, it)
             return true;
-        } ?: let { // TODO: Протестировать let, вместо run
+        } ?: run {
             LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("player-not-found"))
-            return false
+            return true
         }
     }
 
@@ -36,7 +35,7 @@ class FlyCommand(private val plugin: Main) : CommandExecutor {
             LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("fly")
                 ?.replace("{VALUE}", player.isFlying.toString())
                 ?.replace("{PLAYER}", player.name))
-            return player.allowFlight;
+            return player.allowFlight
         }
     }
 }

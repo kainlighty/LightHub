@@ -6,25 +6,23 @@ api-version: 1.13
 main: ru.kainlight.lighthub.Main
 load: POSTWORLD
 
-softdepend:
-  - PlaceholderAPI
-
 commands:
   lightgm:
+    usage: /gm <number> (<username>)
     aliases:
       - gm
   lightfly:
+    usage: /fly (<username>)
     aliases:
       - fly
-  lightspeed:
-    aliases:
-      - speed
-  lighthub: { }
+  lighthub: {}
   lightspawn:
     aliases:
       - spawn
-  hide: {}
-  show: {}
+  hide:
+    description: Hide all players
+  show:
+    description: Show all players
 
 permissions:
   lighthub.visibility:

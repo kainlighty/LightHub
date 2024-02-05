@@ -12,7 +12,7 @@ import ru.kainlight.lighthub.UTILS.LightPlayer
 class HideCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if(!sender.hasPermission("lighthub.visibility")) return false
-        if(sender !is Player) return false;
+        if(sender !is Player) return true;
 
         Main.getInstance().server.onlinePlayers.forEach { sender.hidePlayer(it) }
         LightPlayer.of(sender).sendMessage(HIDER_HIDDEN_MESSAGE)
@@ -23,7 +23,7 @@ class HideCommand : CommandExecutor {
 class ShowCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if(!sender.hasPermission("lighthub.visibility")) return false
-        if(sender !is Player) return false;
+        if(sender !is Player) return true;
 
         Main.getInstance().server.onlinePlayers.forEach { sender.showPlayer(it) }
         LightPlayer.of(sender).sendMessage(HIDER_SHOWN_MESSAGE)

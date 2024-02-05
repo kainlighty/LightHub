@@ -38,9 +38,7 @@ class Main : JavaPlugin() {
         if(!HideListener.ENABLED) {
             this.registerCommand("hide", HideCommand())
             this.registerCommand("show", ShowCommand())
-        } else {
-            this.registerListener(HideListener(this))
-        }
+        } else this.registerListener(HideListener(this))
     }
 
     fun registerListener(listener: Listener) {

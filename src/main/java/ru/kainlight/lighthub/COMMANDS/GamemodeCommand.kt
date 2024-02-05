@@ -8,7 +8,6 @@ import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import ru.kainlight.lighthub.Main
 import ru.kainlight.lighthub.UTILS.LightPlayer
-import java.util.*
 
 class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter {
 
@@ -18,13 +17,12 @@ class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter 
 
         val value: Int = args[0].toIntOrNull() ?: return false;
         if (args.size == 2 && sender.hasPermission("lighthub.gm.other")) {
-            plugin.server.getPlayer(args[1])?.
-            let {
+            plugin.server.getPlayer(args[1])?.let {
                 this.setGameMode(sender, it, value)
                 return true;
             } ?: run {
                 LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("player-not-found"))
-                return false
+                return true
             }
         } else if (args.size == 1) {
             this.setGameMode(sender, sender, value)

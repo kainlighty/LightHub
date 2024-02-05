@@ -14,7 +14,10 @@ class SpawnCommand : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if(sender !is Player) return false;
 
-        if(args.isEmpty() && sender.hasPermission("lighthub.spawn")) SPAWN_LOCATION?.let { sender.teleport(it) }
+        if(args.isEmpty() && sender.hasPermission("lighthub.spawn")) SPAWN_LOCATION?.let {
+            sender.teleport(it)
+            return true
+        }
         else if (args.size == 1) {
             if (sender.hasPermission("lighthub.spawn.create") && args[0] == "create") {
                 val spawnSection = Main.getInstance().getSpawnConfig().getConfig();
@@ -30,15 +33,19 @@ class SpawnCommand : CommandExecutor, TabCompleter {
                 SPAWN_LOCATION = sender.location
                 Main.getInstance().getSpawnConfig().saveConfig()
                 LightPlayer.of(sender).sendMessage("<green>The location for spawn is set")
+                return true
             } else {
-                Main.getInstance().server.getPlayer(args[0])?.teleport(SPAWN_LOCATION!!) ?: run {
+                Main.getInstance().server.getPlayer(args[0])?.let {
+                    it.teleport(SPAWN_LOCATION!!)
+                    return true
+                } ?: run {
                     LightPlayer.of(sender).sendMessage(Main.getInstance().getMessages().getConfig().getString("player-not-found"))
-                    return false;
+                    return true;
                 }
             }
         }
 
-        return false;
+        return true;
     }
 
     override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<String>): MutableList<String>? {

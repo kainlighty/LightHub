@@ -17,7 +17,7 @@ settings:
 # All changes required restart plugin
 # If disabled, the following commands are available: "/hide", "/show"
 hider:
-  enable: false # for 1.13+ (disable if below)
+  enable: false
   slot: 4 # 0-8
   shown:
     material: GRAY_DYE
