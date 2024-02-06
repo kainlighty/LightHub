@@ -22,7 +22,7 @@ class FlyCommand(private val plugin: Main) : CommandExecutor {
         }
     }
 
-    fun toggleFly(plugin: Main, sender: CommandSender, player: Player, instant: Boolean? = null): Boolean {
+    private fun toggleFly(plugin: Main, sender: CommandSender, player: Player, instant: Boolean? = null): Boolean {
         if (!player.allowFlight || instant == true) {
             player.allowFlight = true
             player.isFlying = true

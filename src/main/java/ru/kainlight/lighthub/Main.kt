@@ -10,7 +10,7 @@ import ru.kainlight.lighthub.UTILS.LightConfig
 import ru.kainlight.lighthub.UTILS.loadDefaultConfig
 import ru.kainlight.lighthub.UTILS.setAudience
 
-class Main : JavaPlugin() {
+class Main : JavaPlugin(), Listener {
 
     private var spawnConfig: LightConfig? = null
     private var messages: LightConfig? = null
@@ -23,45 +23,38 @@ class Main : JavaPlugin() {
 
     override fun onEnable() {
         instance = this
-
         setAudience(this);
-
         loadDefaultConfig()
 
-        this.registerListener(PlayerListener(this))
+        registerListener(PlayerListener(this))
 
         this.registerCommand("fly", FlyCommand(this))
-        this.registerCommand("gm", GamemodeCommand(this))
-        this.registerCommand("lighthub", MainCommand())
-        this.registerCommand("spawn", SpawnCommand())
+        .registerCommand("gm", GamemodeCommand(this))
+        .registerCommand("lighthub", MainCommand())
+        .registerCommand("spawn", SpawnCommand())
 
-        if(!HideListener.ENABLED) {
+        if(!this.config.getBoolean("hider.enable", false)) {
             this.registerCommand("hide", HideCommand())
-            this.registerCommand("show", ShowCommand())
+                .registerCommand("show", ShowCommand())
         } else this.registerListener(HideListener(this))
     }
 
-    fun registerListener(listener: Listener) {
+    private fun registerListener(listener: Listener): Main {
         server.pluginManager.registerEvents(listener, this)
+        return this
     }
 
-    fun registerCommand(name: String, executor: CommandExecutor) {
+    private fun registerCommand(name: String, executor: CommandExecutor): Main {
         getCommand(name)!!.setExecutor(executor)
+        return this;
     }
 
-    fun getSpawnConfig(): LightConfig {
-        return spawnConfig!!;
-    }
-    fun getMessages(): LightConfig {
-        return messages!!;
-    }
+    fun getSpawnConfig(): LightConfig { return spawnConfig!!; }
+    fun getMessages(): LightConfig { return messages!!; }
 
     companion object {
         private lateinit var instance: Main
-
-        @JvmStatic fun getInstance() : Main {
-            return instance;
-        }
+        @JvmStatic fun getInstance() : Main { return instance; }
 
         fun isInteger(str: String?) = str?.toIntOrNull()?.let { true } ?: false
     }

@@ -15,7 +15,7 @@ commands:
     usage: /fly (<username>)
     aliases:
       - fly
-  lighthub: {}
+  lighthub: { }
   lightspawn:
     aliases:
       - spawn
@@ -27,35 +27,69 @@ commands:
 permissions:
   lighthub.visibility:
     default: true
-  lighthub.gm:
+  lighthub.gamemode:
     default: op
   lighthub.gamemode.other:
     default: op
     children:
       lighthub.gm: true
+  lighthub.gamemode.*:
+    default: op
+    children:
+      lighthub.gamemode: true
+      lighthub.gamemode.other: true
   lighthub.fly:
     default: op
   lighthub.fly.other:
     default: op
     children:
       lighthub.fly: true
-  lighthub.speed:
-    default: op
-  lighthub.speed.other:
+  lighthub.fly.*:
     default: op
     children:
-      lighthub.speed: true
+      lighthub.fly: true
+      lighthub.fly.other: true
   lighthub.spawn:
     default: true
   lighthub.spawn.create:
     default: op
     children:
       lighthub.spawn: true
-  lighthub.drop:
+  lighthub.inv.drop:
     default: op
-  lighthub.block.pickup:
+  lighthub.inv.pickup:
+    default: op
+  lighthub.inv.move:
+    default: op
+  lighthub.inv.*:
+    default: op
+    children:
+      lighthub.inv.drop: true
+      lighthub.inv.pickup: true
+      lighthub.inv.move: true
+  lighthub.pickup:
     default: op
   lighthub.block.break:
     default: op
   lighthub.block.place:
     default: op
+  lighthub.block.*:
+    default: op
+    children:
+      lighthub.block.break: true
+      lighthub.block.place: true
+  lighthub.damage:
+    default: op
+  lighthub.*:
+    default: op
+    children:
+      lighthub.visibility: true
+      lighthub.gamemode: true
+      lighthub.gamemode.other: true
+      lighthub.fly: true
+      lighthub.fly.other: true
+      lighthub.spawn: true
+      lighthub.inv.*: true
+      lighthub.pickup: true
+      lighthub.block.*: true
+      lighthub.damage: true

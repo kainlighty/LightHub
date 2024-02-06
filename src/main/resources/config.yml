@@ -2,17 +2,18 @@ settings:
   join-message: false
   quit-message: false
   toggle-fly: true # auto fly mode when join if player has permission "lighthub.fly"
+  clear-inventory-on-exit: true # don't work if player is op
   health: 20.0
   min-y: 0.0
   speed: 7.0
   allowed-commands:
-    - /spawn
-    - /menu
-    - /license
-    - /logout
-    - /changepassword
-    - /hide
-    - /show
+    - spawn
+    - menu
+    - license
+    - logout
+    - changepassword
+    - hide
+    - show
 
 # All changes required restart plugin
 # If disabled, the following commands are available: "/hide", "/show"

@@ -12,11 +12,11 @@ import ru.kainlight.lighthub.UTILS.LightPlayer
 class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        if (sender !is Player || !sender.hasPermission("lighthub.gm")) return false
+        if (!sender.hasPermission("lighthub.gamemode")) return false
         if(args.isEmpty()) return false;
 
         val value: Int = args[0].toIntOrNull() ?: return false;
-        if (args.size == 2 && sender.hasPermission("lighthub.gm.other")) {
+        if (args.size == 2 && sender.hasPermission("lighthub.gamemode.other")) {
             plugin.server.getPlayer(args[1])?.let {
                 this.setGameMode(sender, it, value)
                 return true;
@@ -24,7 +24,7 @@ class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter 
                 LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("player-not-found"))
                 return true
             }
-        } else if (args.size == 1) {
+        } else if (args.size == 1 && sender is Player) {
             this.setGameMode(sender, sender, value)
             return true
         } else return false;
@@ -44,7 +44,7 @@ class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter 
     }
 
     override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<String>): MutableList<String>? {
-        if(args.size == 1 && sender.hasPermission("lighthub.gm")) {
+        if(args.size == 1 && sender.hasPermission("lighthub.gamemode")) {
             return mutableListOf("0", "1", "2", "3")
         }
 

@@ -20,21 +20,20 @@ var DEFAULT_HEALTH: Double = 20.0
 var SPAWN_LOCATION: Location? = null
 
 fun loadDefaultConfig() {
-    val config = Main.getInstance().config
     val messages = Main.getInstance().getMessages().getConfig();
-
     CANCEL_CHAT_MESSAGE = messages.getString("chat")
     HIDER_SHOWN_MESSAGE = messages.getString("hider.shown")
     HIDER_HIDDEN_MESSAGE = messages.getString("hider.hidden")
 
+    val config = Main.getInstance().config.getConfigurationSection("settings")!!
     JOIN_MESSAGE_ENABLED = config.getBoolean("join-message")
     QUIT_MESSAGE_ENABLED = config.getBoolean("quit-message")
     CLEAR_INVENTORY_ON_EXIT = config.getBoolean("clear-inventory-on-exit", false)
     TOGGLE_FLY = config.getBoolean("toggle-fly", false)
-    DEFAULT_SPEED = config.getLong("settings.speed", 1) / 10.0f
-    MIN_Y = config.getDouble("settings.min-y", 0.0)
-    ALLOWED_COMMANDS = config.getStringList("settings.allowed-commands")
-    DEFAULT_HEALTH = config.getDouble("settings.health", 20.0)
+    DEFAULT_SPEED = config.getLong("speed", 1) / 10.0f
+    MIN_Y = config.getDouble("min-y", 0.0)
+    ALLOWED_COMMANDS = config.getStringList("allowed-commands")
+    DEFAULT_HEALTH = config.getDouble("health", 20.0)
 
     val spawnSection = Main.getInstance().getSpawnConfig().getConfig();
     spawnSection.getString("world")?.let {

@@ -10,22 +10,21 @@ import java.util.regex.Pattern
 
 @Getter
 class Parser {
-
     companion object {
         private val hexPatten: Pattern = Pattern.compile("#[0-9A-Fa-f]{6}")
 
         fun hex(input: String): TextComponent {
-            var input = input
-            val matcher = hexPatten.matcher(input)
+            var text = input
+            val matcher = hexPatten.matcher(text)
 
             while (matcher.find()) {
                 val hexColor = matcher.group()
                 if (!hexColor.startsWith("&#")) {
-                    input = input.replace(hexColor, "&$hexColor")
+                    text = text.replace(hexColor, "&$hexColor")
                 }
             }
 
-            return LegacyComponentSerializer.legacyAmpersand().deserialize(input)
+            return LegacyComponentSerializer.legacyAmpersand().deserialize(text)
         }
 
         fun hexString(input: String): String {
@@ -36,16 +35,16 @@ class Parser {
             return MiniMessage.miniMessage().deserialize(text).decoration(TextDecoration.ITALIC, false)
         }
 
-        fun apmersand(text: String?): Component {
-            return LegacyComponentSerializer.legacyAmpersand().deserialize(text!!)
+        fun apmersand(text: String): Component {
+            return LegacyComponentSerializer.legacyAmpersand().deserialize(text)
         }
 
-        fun section(text: String?): Component {
-            return LegacyComponentSerializer.legacySection().deserialize(text!!)
+        fun section(text: String): Component {
+            return LegacyComponentSerializer.legacySection().deserialize(text)
         }
 
-        fun Char(ch: Char, text: String?): Component {
-            return LegacyComponentSerializer.legacy(ch).deserialize(text!!)
+        fun Char(char: Char, text: String): Component {
+            return LegacyComponentSerializer.legacy(char).deserialize(text)
         }
     }
 }
