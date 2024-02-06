@@ -28,10 +28,10 @@ class Main : JavaPlugin(), Listener {
 
         registerListener(PlayerListener(this))
 
-        this.registerCommand("fly", FlyCommand(this))
-        .registerCommand("gm", GamemodeCommand(this))
+        this.registerCommand("lightgamemode", GamemodeCommand(this))
+        .registerCommand("lightfly", FlyCommand(this))
         .registerCommand("lighthub", MainCommand())
-        .registerCommand("spawn", SpawnCommand())
+        .registerCommand("lightspawn", SpawnCommand())
 
         if(!this.config.getBoolean("hider.enable", false)) {
             this.registerCommand("hide", HideCommand())

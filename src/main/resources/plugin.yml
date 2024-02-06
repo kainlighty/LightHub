@@ -7,7 +7,7 @@ main: ru.kainlight.lighthub.Main
 load: POSTWORLD
 
 commands:
-  lightgm:
+  lightgamemode:
     usage: /gm <number> (<username>)
     aliases:
       - gm
