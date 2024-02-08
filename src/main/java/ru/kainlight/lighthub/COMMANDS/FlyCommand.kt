@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import ru.kainlight.lighthub.Main
-import ru.kainlight.lighthub.UTILS.LightPlayer
+import ru.kainlight.lighthub.UTILS.message
 
 class FlyCommand(private val plugin: Main) : CommandExecutor {
 
@@ -17,7 +17,7 @@ class FlyCommand(private val plugin: Main) : CommandExecutor {
             this.toggleFly(plugin, sender, it)
             return true;
         } ?: run {
-            LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("player-not-found"))
+            sender.message(plugin.getMessages().getConfig().getString("player-not-found"))
             return true
         }
     }
@@ -31,7 +31,7 @@ class FlyCommand(private val plugin: Main) : CommandExecutor {
             player.isFlying = false
         }
 
-        LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("fly")
+        sender.message(plugin.getMessages().getConfig().getString("fly")
             ?.replace("{VALUE}", player.isFlying.toString())
             ?.replace("{PLAYER}", player.name))
         return player.allowFlight

@@ -17,7 +17,7 @@ settings:
 
 # All changes required restart plugin
 # If disabled, the following commands are available: "/hide", "/show"
-hider:
+hider: # >1.13 only
   enable: false
   slot: 4 # 0-8
   shown:

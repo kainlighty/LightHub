@@ -1,20 +1,17 @@
 package ru.kainlight.lighthub.LISTENERS
 
-import org.bukkit.command.Command
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
-import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.BlockPlaceEvent
-import org.bukkit.event.entity.*
+import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.FoodLevelChangeEvent
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryDragEvent
-import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.player.*
-import ru.kainlight.lighthub.COMMANDS.FlyCommand
 import ru.kainlight.lighthub.Main
 import ru.kainlight.lighthub.UTILS.*
 
@@ -66,7 +63,7 @@ class PlayerListener(private var plugin: Main) : Listener {
 
         if (!player.hasPermission("lighthub.chat")) {
             event.isCancelled = true
-            CANCEL_CHAT_MESSAGE?.let { if (it.isNotBlank()) LightPlayer.of(player).sendMessage(it) }
+            CANCEL_CHAT_MESSAGE?.let { if (it.isNotBlank()) player.message(it) }
         }
     }
 
@@ -81,7 +78,7 @@ class PlayerListener(private var plugin: Main) : Listener {
 
             if (!ALLOWED_COMMANDS.contains(command)) {
                 event.isCancelled = true;
-                CANCEL_CHAT_MESSAGE?.let { if (it.isNotBlank()) LightPlayer.of(player).sendMessage(it) }
+                CANCEL_CHAT_MESSAGE?.let { if (it.isNotBlank()) player.message(it) }
             }
         }
     }

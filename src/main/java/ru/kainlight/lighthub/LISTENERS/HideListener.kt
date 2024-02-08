@@ -13,7 +13,8 @@ import ru.kainlight.lighthub.Main
 import ru.kainlight.lighthub.UTILS.HIDER_HIDDEN_MESSAGE
 import ru.kainlight.lighthub.UTILS.HIDER_SHOWN_MESSAGE
 import ru.kainlight.lighthub.UTILS.JAVA.ItemBuilder
-import ru.kainlight.lighthub.UTILS.LightPlayer
+import ru.kainlight.lighthub.UTILS.message
+import ru.kainlight.lighthub.UTILS.sound
 
 class HideListener(private val plugin: Main) : Listener {
 
@@ -61,29 +62,28 @@ class HideListener(private val plugin: Main) : Listener {
         if (player.inventory.getItem(SLOT) == null) return
         if(!player.hasPermission("lighthub.visibility")) return
 
-        val lightPlayer = LightPlayer.of(player)
         val itemInHand = player.itemInHand
 
         if (itemInHand.isSimilar(HIDE_ITEM)) {
             plugin.server.onlinePlayers.forEach { player.hidePlayer(plugin, it) }
             player.inventory.setItem(SLOT, SHOW_ITEM)
 
-            if (HIDDEN_SOUND_ENABLED) lightPlayer.playSound(
+            if (HIDDEN_SOUND_ENABLED) player.sound(
                 Sound.valueOf(HIDDEN_SOUND_NAME),
                 HIDDEN_SOUND_VOLUME.toFloat(),
                 HIDDEN_SOUND_PITCH.toFloat()
             )
-            lightPlayer.sendMessage(HIDER_HIDDEN_MESSAGE)
+            player.message(HIDER_HIDDEN_MESSAGE)
         } else if (itemInHand.isSimilar(SHOW_ITEM)) {
             plugin.server.onlinePlayers.forEach { player.showPlayer(plugin, it) }
             player.inventory.setItem(SLOT, HIDE_ITEM)
 
-            if (SHOWN_SOUND_ENABLED) lightPlayer.playSound(
+            if (SHOWN_SOUND_ENABLED) player.sound(
                 Sound.valueOf(SHOWN_SOUND_NAME),
                 SHOWN_SOUND_VOLUME.toFloat(),
                 SHOWN_SOUND_PITCH.toFloat()
             )
-            lightPlayer.sendMessage(HIDER_SHOWN_MESSAGE)
+            player.message(HIDER_SHOWN_MESSAGE)
         }
     }
 }

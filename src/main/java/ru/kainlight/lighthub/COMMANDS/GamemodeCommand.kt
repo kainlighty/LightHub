@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import ru.kainlight.lighthub.Main
-import ru.kainlight.lighthub.UTILS.LightPlayer
+import ru.kainlight.lighthub.UTILS.message
 
 class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter {
 
@@ -21,7 +21,7 @@ class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter 
                 this.setGameMode(sender, it, value)
                 return true;
             } ?: run {
-                LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("player-not-found"))
+                sender.message(plugin.getMessages().getConfig().getString("player-not-found"))
                 return true
             }
         } else if (args.size == 1 && sender is Player) {
@@ -38,7 +38,7 @@ class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter 
             3 -> player.setGameMode(GameMode.SPECTATOR)
         }
 
-        LightPlayer.of(sender).sendMessage(plugin.getMessages().getConfig().getString("gamemode")
+        sender.message(plugin.getMessages().getConfig().getString("gamemode")
             ?.replace("{VALUE}", player.gameMode.name)
             ?.replace("{PLAYER}", player.name))
     }

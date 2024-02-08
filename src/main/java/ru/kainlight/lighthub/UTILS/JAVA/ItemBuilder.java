@@ -119,7 +119,7 @@ public final class ItemBuilder {
             return this;
         }
 
-        this.displayName = Parser.Companion.hexString(displayName);
+        this.displayName = Parser.INSTANCE.hexString(displayName);
         return this;
     }
 
@@ -158,7 +158,7 @@ public final class ItemBuilder {
         List<String> finalList = new ArrayList<>();
 
         for (String line : lines) {
-            line = Parser.Companion.hexString(line);
+            line = Parser.INSTANCE.hexString(line);
             finalList.add(line);
         }
 
@@ -170,7 +170,7 @@ public final class ItemBuilder {
         List<String> finalList = new ArrayList<>();
 
         for (String line : lines) {
-            line = Parser.Companion.hexString(line);
+            line = Parser.INSTANCE.hexString(line);
             finalList.add(line);
         }
 
@@ -179,7 +179,7 @@ public final class ItemBuilder {
     }
 
     public ItemBuilder appendLine(String line) {
-        line = Parser.Companion.hexString(line);
+        line = Parser.INSTANCE.hexString(line);
 
         this.lore.add(line);
         return this;

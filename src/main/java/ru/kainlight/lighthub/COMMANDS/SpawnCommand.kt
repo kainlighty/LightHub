@@ -7,8 +7,8 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import ru.kainlight.lighthub.Main
-import ru.kainlight.lighthub.UTILS.LightPlayer
 import ru.kainlight.lighthub.UTILS.SPAWN_LOCATION
+import ru.kainlight.lighthub.UTILS.message
 
 class SpawnCommand : CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
@@ -32,14 +32,14 @@ class SpawnCommand : CommandExecutor, TabCompleter {
 
                 SPAWN_LOCATION = sender.location
                 Main.getInstance().getSpawnConfig().saveConfig()
-                LightPlayer.of(sender).sendMessage("<green>The location for spawn is set")
+                sender.message("<green>The location for spawn is set")
                 return true
             } else {
                 Main.getInstance().server.getPlayer(args[0])?.let {
                     it.teleport(SPAWN_LOCATION!!)
                     return true
                 } ?: run {
-                    LightPlayer.of(sender).sendMessage(Main.getInstance().getMessages().getConfig().getString("player-not-found"))
+                    sender.message(Main.getInstance().getMessages().getConfig().getString("player-not-found"))
                     return true;
                 }
             }

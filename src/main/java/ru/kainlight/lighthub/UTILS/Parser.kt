@@ -9,42 +9,42 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import java.util.regex.Pattern
 
 @Getter
-class Parser {
-    companion object {
-        private val hexPatten: Pattern = Pattern.compile("#[0-9A-Fa-f]{6}")
+object Parser {
 
-        fun hex(input: String): TextComponent {
-            var text = input
-            val matcher = hexPatten.matcher(text)
+    private val hexPatten: Pattern = Pattern.compile("#[0-9A-Fa-f]{6}")
 
-            while (matcher.find()) {
-                val hexColor = matcher.group()
-                if (!hexColor.startsWith("&#")) {
-                    text = text.replace(hexColor, "&$hexColor")
-                }
+    @JvmStatic
+    fun hex(input: String): TextComponent {
+        var input = input
+        val matcher = hexPatten.matcher(input)
+
+        while (matcher.find()) {
+            val hexColor = matcher.group()
+            if (! hexColor.startsWith("&#")) {
+                input = input.replace(hexColor, "&$hexColor")
             }
-
-            return LegacyComponentSerializer.legacyAmpersand().deserialize(text)
         }
 
-        fun hexString(input: String): String {
-            return LegacyComponentSerializer.legacySection().serialize(hex(input))
-        }
+        return LegacyComponentSerializer.legacyAmpersand().deserialize(input).decoration(TextDecoration.ITALIC, false)
+    }
 
-        fun mini(text: String): Component {
-            return MiniMessage.miniMessage().deserialize(text).decoration(TextDecoration.ITALIC, false)
-        }
+    fun hexString(input: String): String {
+        return LegacyComponentSerializer.legacySection().serialize(hex(input))
+    }
 
-        fun apmersand(text: String): Component {
-            return LegacyComponentSerializer.legacyAmpersand().deserialize(text)
-        }
+    fun mini(text: String): Component {
+        return MiniMessage.miniMessage().deserialize(text).decoration(TextDecoration.ITALIC, false)
+    }
 
-        fun section(text: String): Component {
-            return LegacyComponentSerializer.legacySection().deserialize(text)
-        }
+    fun apmersand(text: String): Component {
+        return LegacyComponentSerializer.legacyAmpersand().deserialize(text).decoration(TextDecoration.ITALIC, false)
+    }
 
-        fun Char(char: Char, text: String): Component {
-            return LegacyComponentSerializer.legacy(char).deserialize(text)
-        }
+    fun section(text: String): Component {
+        return LegacyComponentSerializer.legacySection().deserialize(text).decoration(TextDecoration.ITALIC, false)
+    }
+
+    fun char(ch: Char, text: String): Component {
+        return LegacyComponentSerializer.legacy(ch).deserialize(text).decoration(TextDecoration.ITALIC, false)
     }
 }

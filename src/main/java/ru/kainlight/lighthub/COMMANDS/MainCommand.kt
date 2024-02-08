@@ -4,7 +4,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import ru.kainlight.lighthub.Main
-import ru.kainlight.lighthub.UTILS.LightPlayer
+import ru.kainlight.lighthub.UTILS.message
 
 class MainCommand : CommandExecutor {
 
@@ -16,7 +16,7 @@ class MainCommand : CommandExecutor {
             Main.getInstance().getMessages().reloadConfig()
             Main.getInstance().getSpawnConfig().reloadConfig()
 
-            LightPlayer.of(sender).sendMessage(Main.getInstance().config.getString("reload"))
+            sender.message(Main.getInstance().config.getString("reload"))
             return true;
         }
 
