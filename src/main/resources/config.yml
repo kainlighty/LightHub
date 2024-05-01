@@ -22,7 +22,7 @@ hider: # >1.13 only
   slot: 4 # 0-8
   shown:
     material: GRAY_DYE
-    name: "&aПоказать игроков"
+    name: "&aShow"
     sound:
       enable: false
       name: ENTITY_PLAYER_LEVELUP
@@ -30,7 +30,7 @@ hider: # >1.13 only
       volume: 0.5
   hidden:
     material: LIME_DYE
-    name: "&7Скрыть игроков"
+    name: "&7Hide"
     sound:
       enable: false
       name: ENTITY_PLAYER_LEVELUP

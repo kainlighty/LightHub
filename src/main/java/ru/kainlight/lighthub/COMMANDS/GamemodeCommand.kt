@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import ru.kainlight.lighthub.Main
-import ru.kainlight.lighthub.UTILS.message
+import ru.kainlight.lighthub.lightlibrary.message
 
 class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter {
 

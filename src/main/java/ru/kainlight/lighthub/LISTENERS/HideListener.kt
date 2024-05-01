@@ -1,7 +1,7 @@
 package ru.kainlight.lighthub.LISTENERS
 
-import org.bukkit.Material
 import org.bukkit.Sound
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
@@ -9,12 +9,13 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.metadata.FixedMetadataValue
+import ru.kainlight.lighthub.lightlibrary.BUILDERS.ItemBuilder
 import ru.kainlight.lighthub.Main
 import ru.kainlight.lighthub.UTILS.HIDER_HIDDEN_MESSAGE
 import ru.kainlight.lighthub.UTILS.HIDER_SHOWN_MESSAGE
-import ru.kainlight.lighthub.UTILS.JAVA.ItemBuilder
-import ru.kainlight.lighthub.UTILS.message
-import ru.kainlight.lighthub.UTILS.sound
+import ru.kainlight.lighthub.lightlibrary.message
+import ru.kainlight.lighthub.lightlibrary.sound
 
 class HideListener(private val plugin: Main) : Listener {
 
@@ -22,50 +23,76 @@ class HideListener(private val plugin: Main) : Listener {
     var SHOW_ITEM: ItemStack? = null
 
     init {
-        val hiderSection = plugin.config.getConfigurationSection("hider")!!
-        HIDE_ITEM = ItemBuilder(Material.getMaterial(hiderSection.getString("hidden.material")!!)!!)
-            .displayName(hiderSection.getString("hidden.name")!!)
+        val hiderSection = plugin.config.getConfigurationSection("hider") !!
+        HIDE_ITEM = ItemBuilder(hiderSection.getString("hidden.material") !!)
+            .displayName(hiderSection.getString("hidden.name") !!)
             .defaultFlags()
             .build()
-        SHOW_ITEM = ItemBuilder(Material.getMaterial(hiderSection.getString("shown.material")!!)!!)
-            .displayName(hiderSection.getString("shown.name")!!)
+        SHOW_ITEM = ItemBuilder(hiderSection.getString("shown.material") !!)
+            .displayName(hiderSection.getString("shown.name") !!)
             .defaultFlags()
             .build()
     }
 
-    private val SLOT: Int = plugin.config.getInt("hider.slot", 4)
+    private var SLOT: Int = plugin.config.getInt("hider.slot", 4)
+    private val COOLDOWN_TIME: Long = plugin.config.getLong("hider.cooldown", 0)
 
     private val HIDDEN_SOUND_ENABLED = plugin.config.getBoolean("hider.hidden.sound.enable", false)
-    private val HIDDEN_SOUND_NAME = plugin.config.getString("hider.hidden.sound.name")!!
+    private val HIDDEN_SOUND_NAME = plugin.config.getString("hider.hidden.sound.name") !!
     private val HIDDEN_SOUND_VOLUME = plugin.config.getDouble("hider.shown.sound.volume", 1.0)
     private val HIDDEN_SOUND_PITCH = plugin.config.getDouble("hider.shown.sound.pitch", 1.0)
 
     private val SHOWN_SOUND_ENABLED = plugin.config.getBoolean("hider.shown.sound.enable", false)
-    private val SHOWN_SOUND_NAME = plugin.config.getString("hider.shown.sound.name")!!
+    private val SHOWN_SOUND_NAME = plugin.config.getString("hider.shown.sound.name") !!
     private val SHOWN_SOUND_VOLUME = plugin.config.getDouble("hider.shown.sound.volume", 1.0)
     private val SHOWN_SOUND_PITCH = plugin.config.getDouble("hider.shown.sound.pitch", 1.0)
 
     @EventHandler
     fun onJoinHider(event: PlayerJoinEvent) {
+        if(SLOT < 0 || SLOT > 8) {
+            SLOT = 4
+            plugin.logger.warning("The SLOT parameter in the Hider is set to an incorrect value in config.yml")
+            plugin.logger.warning("The default value is set to 4")
+        }
         event.player.inventory.setItem(SLOT, this.HIDE_ITEM)
     }
 
     @EventHandler
     fun onHiderMoving(event: InventoryMoveItemEvent) {
-        if(event.item.isSimilar(this.HIDE_ITEM) || event.item.isSimilar(this.SHOW_ITEM)) event.isCancelled = true
+        val item = event.item
+        if (item.isSimilar(this.HIDE_ITEM) || item.isSimilar(this.SHOW_ITEM)) event.isCancelled = true
     }
 
     @EventHandler
-    fun hide(event: PlayerInteractEvent) {
-        if (event.action != Action.RIGHT_CLICK_AIR && event.action != Action.RIGHT_CLICK_BLOCK) return;
+    fun hideEvent(event: PlayerInteractEvent) {
+        val action = event.action
+        if(action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) return
+
         val player = event.player
-        if (player.inventory.getItem(SLOT) == null) return
-        if(!player.hasPermission("lighthub.visibility")) return
+        val metadata = player.hasMetadata("playersHidden")
+        if(!metadata) {
+            if (player.inventory.getItem(SLOT) == null) return
+            if (!player.hasPermission("lighthub.visibility")) return
 
-        val itemInHand = player.itemInHand
+            val itemInHand = player.itemInHand
 
+            val onlinePlayers = plugin.server.onlinePlayers
+            if (this.hide(player, itemInHand, onlinePlayers)) {
+                player.setMetadata("playersHidden", FixedMetadataValue(plugin, true))
+
+                plugin.server.scheduler.runTaskLater(plugin, Runnable{
+                    player.removeMetadata("playersHidden", plugin)
+                    return@Runnable
+                },5)
+            }
+
+        }
+
+    }
+
+    private fun hide(player: Player, itemInHand: ItemStack, onlinePlayers: Collection<Player>): Boolean {
         if (itemInHand.isSimilar(HIDE_ITEM)) {
-            plugin.server.onlinePlayers.forEach { player.hidePlayer(plugin, it) }
+            onlinePlayers.forEach { player.hidePlayer(plugin, it) }
             player.inventory.setItem(SLOT, SHOW_ITEM)
 
             if (HIDDEN_SOUND_ENABLED) player.sound(
@@ -74,8 +101,9 @@ class HideListener(private val plugin: Main) : Listener {
                 HIDDEN_SOUND_PITCH.toFloat()
             )
             player.message(HIDER_HIDDEN_MESSAGE)
+            return true
         } else if (itemInHand.isSimilar(SHOW_ITEM)) {
-            plugin.server.onlinePlayers.forEach { player.showPlayer(plugin, it) }
+            onlinePlayers.forEach { player.showPlayer(plugin, it) }
             player.inventory.setItem(SLOT, HIDE_ITEM)
 
             if (SHOWN_SOUND_ENABLED) player.sound(
@@ -84,6 +112,7 @@ class HideListener(private val plugin: Main) : Listener {
                 SHOWN_SOUND_PITCH.toFloat()
             )
             player.message(HIDER_SHOWN_MESSAGE)
-        }
+            return true
+        } else return false
     }
 }

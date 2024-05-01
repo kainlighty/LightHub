@@ -1,16 +1,15 @@
 package ru.kainlight.lighthub
 
-import org.bukkit.command.CommandExecutor
 import org.bukkit.event.Listener
-import org.bukkit.plugin.java.JavaPlugin
 import ru.kainlight.lighthub.COMMANDS.*
 import ru.kainlight.lighthub.LISTENERS.HideListener
 import ru.kainlight.lighthub.LISTENERS.PlayerListener
-import ru.kainlight.lighthub.UTILS.LightConfig
 import ru.kainlight.lighthub.UTILS.loadDefaultConfig
-import ru.kainlight.lighthub.UTILS.setAudience
+import ru.kainlight.lighthub.lightlibrary.CONFIGS.LightConfig
+import ru.kainlight.lighthub.lightlibrary.LightPlugin
+import ru.kainlight.lighthub.lightlibrary.setAudience
 
-class Main : JavaPlugin(), Listener {
+class Main : LightPlugin(), Listener {
 
     private var spawnConfig: LightConfig? = null
     private var messages: LightConfig? = null
@@ -22,11 +21,11 @@ class Main : JavaPlugin(), Listener {
     }
 
     override fun onEnable() {
-        instance = this
+        INSTANCE = this
         setAudience(this);
         loadDefaultConfig()
 
-        registerListener(PlayerListener(this))
+        registerListener(PlayerListener())
 
         this.registerCommand("lightgamemode", GamemodeCommand(this))
         .registerCommand("lightfly", FlyCommand(this))
@@ -39,23 +38,8 @@ class Main : JavaPlugin(), Listener {
         } else this.registerListener(HideListener(this))
     }
 
-    private fun registerListener(listener: Listener): Main {
-        server.pluginManager.registerEvents(listener, this)
-        return this
-    }
-
-    private fun registerCommand(name: String, executor: CommandExecutor): Main {
-        getCommand(name)!!.setExecutor(executor)
-        return this;
-    }
-
     fun getSpawnConfig(): LightConfig { return spawnConfig!!; }
     fun getMessages(): LightConfig { return messages!!; }
 
-    companion object {
-        private lateinit var instance: Main
-        @JvmStatic fun getInstance() : Main { return instance; }
-
-        fun isInteger(str: String?) = str?.toIntOrNull()?.let { true } ?: false
-    }
+    companion object { lateinit var INSTANCE: Main }
 }

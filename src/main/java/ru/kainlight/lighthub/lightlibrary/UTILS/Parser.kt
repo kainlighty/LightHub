@@ -1,4 +1,4 @@
-package ru.kainlight.lighthub.UTILS
+package ru.kainlight.lighthub.lightlibrary.UTILS
 
 import lombok.Getter
 import net.kyori.adventure.text.Component
@@ -15,17 +15,17 @@ object Parser {
 
     @JvmStatic
     fun hex(input: String): TextComponent {
-        var input = input
-        val matcher = hexPatten.matcher(input)
+        var i = input
+        val matcher = hexPatten.matcher(i)
 
         while (matcher.find()) {
             val hexColor = matcher.group()
             if (! hexColor.startsWith("&#")) {
-                input = input.replace(hexColor, "&$hexColor")
+                i = i.replace(hexColor, "&$hexColor")
             }
         }
 
-        return LegacyComponentSerializer.legacyAmpersand().deserialize(input).decoration(TextDecoration.ITALIC, false)
+        return LegacyComponentSerializer.legacyAmpersand().deserialize(i).decoration(TextDecoration.ITALIC, false)
     }
 
     fun hexString(input: String): String {

@@ -4,7 +4,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import ru.kainlight.lighthub.Main
-import ru.kainlight.lighthub.UTILS.message
+import ru.kainlight.lighthub.lightlibrary.message
 
 class MainCommand : CommandExecutor {
 
@@ -12,11 +12,11 @@ class MainCommand : CommandExecutor {
         if(!sender.hasPermission("lighthub.*")) return true;
 
         if(args.size == 1 && args[0] == "reload") {
-            Main.getInstance().reloadConfig()
-            Main.getInstance().getMessages().reloadConfig()
-            Main.getInstance().getSpawnConfig().reloadConfig()
+            Main.INSTANCE.reloadConfig()
+            Main.INSTANCE.getMessages().reloadConfig()
+            Main.INSTANCE.getSpawnConfig().reloadConfig()
 
-            sender.message(Main.getInstance().config.getString("reload"))
+            sender.message(Main.INSTANCE.config.getString("reload"))
             return true;
         }
 

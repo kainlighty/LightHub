@@ -12,11 +12,11 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.player.*
-import ru.kainlight.lighthub.Main
 import ru.kainlight.lighthub.UTILS.*
+import ru.kainlight.lighthub.lightlibrary.message
 
 @Suppress("all")
-class PlayerListener(private var plugin: Main) : Listener {
+class PlayerListener : Listener {
 
     @EventHandler
     fun onPlayerConnected(event: PlayerJoinEvent) {
@@ -63,7 +63,7 @@ class PlayerListener(private var plugin: Main) : Listener {
 
         if (!player.hasPermission("lighthub.chat")) {
             event.isCancelled = true
-            CANCEL_CHAT_MESSAGE?.let { if (it.isNotBlank()) player.message(it) }
+            player.message(CANCEL_CHAT_MESSAGE)
         }
     }
 
@@ -78,7 +78,7 @@ class PlayerListener(private var plugin: Main) : Listener {
 
             if (!ALLOWED_COMMANDS.contains(command)) {
                 event.isCancelled = true;
-                CANCEL_CHAT_MESSAGE?.let { if (it.isNotBlank()) player.message(it) }
+                player.message(CANCEL_CHAT_MESSAGE)
             }
         }
     }

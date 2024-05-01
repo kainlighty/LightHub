@@ -1,4 +1,4 @@
-package ru.kainlight.lighthub.UTILS
+package ru.kainlight.lighthub.lightlibrary.CONFIGS
 
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
