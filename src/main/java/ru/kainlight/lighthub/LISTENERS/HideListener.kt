@@ -35,7 +35,6 @@ class HideListener(private val plugin: Main) : Listener {
     }
 
     private var SLOT: Int = plugin.config.getInt("hider.slot", 4)
-    private val COOLDOWN_TIME: Long = plugin.config.getLong("hider.cooldown", 0)
 
     private val HIDDEN_SOUND_ENABLED = plugin.config.getBoolean("hider.hidden.sound.enable", false)
     private val HIDDEN_SOUND_NAME = plugin.config.getString("hider.hidden.sound.name") !!
