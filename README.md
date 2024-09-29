@@ -64,3 +64,4 @@
 | lighthub.speed.*                      | Full access to speed                                                                    |
 | lighthub.speed                        | Allows to change speed                                                                  |
 | lighthub.speed.other                  | Allows changing the speed of another player                                             |
+| lighthub.reload                       | Access to reload configurations                                                         |
