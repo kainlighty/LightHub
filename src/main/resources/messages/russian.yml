@@ -1,0 +1,12 @@
+config-version: 1.1
+
+hider:
+  hidden: "<bold><red>HUB:</bold> <white>Все игроки скрыты"
+  shown: "<bold><red>HUB:</bold> <white>Все игроки отображены"
+
+player-not-found: "<bold><red>HUB:</bold> <white>Игрок {PLAYER} не найден"
+gamemode: "<bold><red>HUB:</bold> <white>Игровой режим установлен на <gold>{VALUE} <gray>({PLAYER})"
+fly: "<bold><red>HUB:</bold> <white>Режим полёта установлен на <gold>{VALUE} <gray>({PLAYER})"
+speed: "<bold><red>HUB:</bold> <white>Скорость установлена на <gold>{VALUE} <gray>({PLAYER})"
+chat: "<bold><red>HUB:</bold> <white>Вам не разрешается писать в чат"
+reload: "<bold><red>LIGHTHUB:</bold> <white>Все конфигурации перезагружены"

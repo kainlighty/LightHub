@@ -1,3 +1,5 @@
+config-version: 1.1
+
 hider:
   hidden: "<bold><red>HUB:</bold> <white>All players hidden"
   shown: "<bold><red>HUB:</bold> <white>All players shown"
@@ -5,5 +7,6 @@ hider:
 player-not-found: "<bold><red>HUB:</bold> <white>Player not found"
 gamemode: "<bold><red>HUB:</bold> <white>The gamemode is set to <gold>{VALUE} <gray>({PLAYER})"
 fly: "<bold><red>HUB:</bold> <white>Flight mode is set to <gold>{VALUE} <gray>({PLAYER})"
+speed: "<bold><red>HUB:</bold> <white>Speed is set to <gold>{VALUE} <gray>({PLAYER})"
 chat: "<bold><red>HUB:</bold> <white>You are not allowed to write to the chat"
 reload: "<bold><red>LIGHTHUB:</bold> <white>All configurations reloaded"

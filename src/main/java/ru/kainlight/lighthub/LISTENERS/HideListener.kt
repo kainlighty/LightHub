@@ -1,5 +1,6 @@
 package ru.kainlight.lighthub.LISTENERS
 
+import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -10,12 +11,12 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.metadata.FixedMetadataValue
-import ru.kainlight.lighthub.lightlibrary.BUILDERS.ItemBuilder
 import ru.kainlight.lighthub.Main
 import ru.kainlight.lighthub.UTILS.HIDER_HIDDEN_MESSAGE
 import ru.kainlight.lighthub.UTILS.HIDER_SHOWN_MESSAGE
-import ru.kainlight.lighthub.lightlibrary.message
-import ru.kainlight.lighthub.lightlibrary.sound
+import ru.kainlight.lighthub.getAudience
+import ru.kainlight.lightlibrary.BUILDERS.ItemBuilder
+import ru.kainlight.lightlibrary.multiMessage
 
 class HideListener(private val plugin: Main) : Listener {
 
@@ -24,11 +25,11 @@ class HideListener(private val plugin: Main) : Listener {
 
     init {
         val hiderSection = plugin.config.getConfigurationSection("hider") !!
-        HIDE_ITEM = ItemBuilder(hiderSection.getString("hidden.material") !!)
+        HIDE_ITEM = ItemBuilder(Material.valueOf(hiderSection.getString("hidden.material")!!))
             .displayName(hiderSection.getString("hidden.name") !!)
             .defaultFlags()
             .build()
-        SHOW_ITEM = ItemBuilder(hiderSection.getString("shown.material") !!)
+        SHOW_ITEM = ItemBuilder(Material.valueOf(hiderSection.getString("shown.material")!!))
             .displayName(hiderSection.getString("shown.name") !!)
             .defaultFlags()
             .build()
@@ -99,7 +100,7 @@ class HideListener(private val plugin: Main) : Listener {
                 HIDDEN_SOUND_VOLUME.toFloat(),
                 HIDDEN_SOUND_PITCH.toFloat()
             )
-            player.message(HIDER_HIDDEN_MESSAGE)
+            player.getAudience().multiMessage(HIDER_HIDDEN_MESSAGE)
             return true
         } else if (itemInHand.isSimilar(SHOW_ITEM)) {
             onlinePlayers.forEach { player.showPlayer(plugin, it) }
@@ -110,8 +111,13 @@ class HideListener(private val plugin: Main) : Listener {
                 SHOWN_SOUND_VOLUME.toFloat(),
                 SHOWN_SOUND_PITCH.toFloat()
             )
-            player.message(HIDER_SHOWN_MESSAGE)
+            player.getAudience().multiMessage(HIDER_SHOWN_MESSAGE)
             return true
         } else return false
+    }
+
+    private fun Player.sound(sound: Sound?, volume: Float = 1f, pitch: Float = 1f) {
+        if(sound == null) return
+        playSound(this.location, sound, volume, pitch)
     }
 }

@@ -13,14 +13,15 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.player.*
 import ru.kainlight.lighthub.UTILS.*
-import ru.kainlight.lighthub.lightlibrary.message
+import ru.kainlight.lighthub.getAudience
+import ru.kainlight.lightlibrary.multiMessage
 
 @Suppress("all")
 class PlayerListener : Listener {
 
     @EventHandler
     fun onPlayerConnected(event: PlayerJoinEvent) {
-        if (!JOIN_MESSAGE_ENABLED) event.joinMessage = null
+        if (!JOIN_MESSAGE) event.joinMessage = null
 
         val player = event.player
         player.health = DEFAULT_HEALTH
@@ -35,15 +36,16 @@ class PlayerListener : Listener {
 
     @EventHandler
     fun onPlayerDisconnectEvent(event: PlayerQuitEvent) {
-        if (!QUIT_MESSAGE_ENABLED) event.quitMessage = null
+        if (!QUIT_MESSAGE) event.quitMessage = null
 
-        val player = event.player
-        if (CLEAR_INVENTORY_ON_EXIT && !player.isOp) player.inventory.clear()
+        if (CLEAR_INVENTORY_ON_EXIT) event.player.inventory.clear()
     }
 
     @EventHandler
     fun onVoid(event: PlayerMoveEvent) {
-        if (event.player.location.y <= MIN_Y) {
+        if(MIN_Y == null) return
+
+        if (event.player.location.y <= MIN_Y!!) {
             SPAWN_LOCATION?.let { event.player.teleport(it) }
         }
     }
@@ -63,7 +65,7 @@ class PlayerListener : Listener {
 
         if (!player.hasPermission("lighthub.chat")) {
             event.isCancelled = true
-            player.message(CANCEL_CHAT_MESSAGE)
+            player.getAudience().multiMessage(CANCEL_CHAT_MESSAGE)
         }
     }
 
@@ -73,19 +75,19 @@ class PlayerListener : Listener {
         val message = event.message
         val command = message.split(" ")[0].replace("/", "")
 
-        if (!player.hasPermission("lighthub.command")) {
+        if (!player.hasPermission("lighthub.chat.commands")) {
             if (ALLOWED_COMMANDS.isEmpty()) return
 
             if (!ALLOWED_COMMANDS.contains(command)) {
-                event.isCancelled = true;
-                player.message(CANCEL_CHAT_MESSAGE)
+                event.isCancelled = true
+                player.getAudience().multiMessage(CANCEL_CHAT_MESSAGE)
             }
         }
     }
 
     @EventHandler
     fun onPlayerDeathEvent(event: PlayerDeathEvent) {
-        event.deathMessage = null
+        if(!DEATH_MESSAGE) event.deathMessage = null
         event.drops.clear()
 
         SPAWN_LOCATION?.let { event.entity.player?.teleport(it) ?: return }
@@ -110,17 +112,17 @@ class PlayerListener : Listener {
 
     @EventHandler
     fun onDamagePlayerEvent(event: EntityDamageEvent) {
-        if(!event.entity.hasPermission("lighthub.damage")) event.isCancelled = true
+        if(!DAMAGE) event.isCancelled = true
     }
 
     @EventHandler
     fun onDamagePlayerEvent(event: EntityDamageByEntityEvent) {
-        if(!event.entity.hasPermission("lighthub.damage")) event.isCancelled = true
+        if(!DAMAGE) event.isCancelled = true
     }
 
     @EventHandler
     fun onHungerPlayerEvent(event: FoodLevelChangeEvent) {
-        event.isCancelled = true
+        if(!HUNGER) event.isCancelled = true
     }
 
     @EventHandler

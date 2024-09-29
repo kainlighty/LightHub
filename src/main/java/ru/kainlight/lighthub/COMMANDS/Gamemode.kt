@@ -7,47 +7,50 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import ru.kainlight.lighthub.Main
-import ru.kainlight.lighthub.lightlibrary.message
+import ru.kainlight.lighthub.getAudience
+import ru.kainlight.lightlibrary.multiMessage
 
-class GamemodeCommand(private val plugin: Main) : CommandExecutor, TabCompleter {
+class Gamemode(private val plugin: Main) : CommandExecutor, TabCompleter {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (!sender.hasPermission("lighthub.gamemode")) return false
-        if(args.isEmpty()) return false;
+        if(args.isEmpty()) return false
 
-        val value: Int = args[0].toIntOrNull() ?: return false;
+        val value: Int = args[0].toIntOrNull() ?: return false
+
         if (args.size == 2 && sender.hasPermission("lighthub.gamemode.other")) {
             plugin.server.getPlayer(args[1])?.let {
                 this.setGameMode(sender, it, value)
-                return true;
+                return true
             } ?: run {
-                sender.message(plugin.getMessages().getConfig().getString("player-not-found"))
+                plugin.messageConfig.getConfig().getString("player-not-found")?.let {
+                    sender.getAudience().multiMessage(it.replace("{PLAYER}", args[1]))
+                }
                 return true
             }
         } else if (args.size == 1 && sender is Player) {
             this.setGameMode(sender, sender, value)
             return true
-        } else return false;
+        } else return false
     }
 
-    private fun setGameMode(sender: CommandSender, player: Player, gamemode: Int): Unit {
+    private fun setGameMode(sender: CommandSender, player: Player, gamemode: Int) {
         when (gamemode) {
-            0 -> player.setGameMode(GameMode.SURVIVAL)
-            1 -> player.setGameMode(GameMode.CREATIVE)
-            2 -> player.setGameMode(GameMode.ADVENTURE)
-            3 -> player.setGameMode(GameMode.SPECTATOR)
+            0 -> player.gameMode = GameMode.SURVIVAL
+            1 -> player.gameMode = GameMode.CREATIVE
+            2 -> player.gameMode = GameMode.ADVENTURE
+            3 -> player.gameMode = GameMode.SPECTATOR
         }
 
-        sender.message(plugin.getMessages().getConfig().getString("gamemode")
-            ?.replace("{VALUE}", player.gameMode.name)
-            ?.replace("{PLAYER}", player.name))
+        plugin.messageConfig.getConfig().getString("gamemode")?.let {
+            sender.getAudience().multiMessage(it.replace("{VALUE}", player.gameMode.name).replace("{PLAYER}", player.name))
+        }
     }
 
     override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<String>): MutableList<String>? {
         if(args.size == 1 && sender.hasPermission("lighthub.gamemode")) {
             return mutableListOf("0", "1", "2", "3")
         }
-
         return null
     }
 }

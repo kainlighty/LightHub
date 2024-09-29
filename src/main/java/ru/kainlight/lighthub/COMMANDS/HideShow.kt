@@ -7,15 +7,16 @@ import org.bukkit.entity.Player
 import ru.kainlight.lighthub.Main
 import ru.kainlight.lighthub.UTILS.HIDER_HIDDEN_MESSAGE
 import ru.kainlight.lighthub.UTILS.HIDER_SHOWN_MESSAGE
-import ru.kainlight.lighthub.lightlibrary.message
+import ru.kainlight.lighthub.getAudience
+import ru.kainlight.lightlibrary.multiMessage
 
 class HideCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if(!sender.hasPermission("lighthub.visibility")) return false
-        if(sender !is Player) return true;
+        if(sender !is Player) return true
 
         Main.INSTANCE.server.onlinePlayers.forEach { sender.hidePlayer(it) }
-        sender.message(HIDER_HIDDEN_MESSAGE)
+        sender.getAudience().multiMessage(HIDER_HIDDEN_MESSAGE)
         return true
     }
 }
@@ -23,10 +24,10 @@ class HideCommand : CommandExecutor {
 class ShowCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if(!sender.hasPermission("lighthub.visibility")) return false
-        if(sender !is Player) return true;
+        if(sender !is Player) return true
 
         Main.INSTANCE.server.onlinePlayers.forEach { sender.showPlayer(it) }
-        sender.message(HIDER_SHOWN_MESSAGE)
+        sender.getAudience().multiMessage(HIDER_SHOWN_MESSAGE)
         return true
     }
 }

@@ -1,10 +1,19 @@
+config-version: 1.1
+
 settings:
+  language: "ENGLISH" # ENGLISH or RUSSIAN
+  parse_mode: "MINIMESSAGE" # MINIMESSAGE or LEGACY
+
+attributes:
+  hunger: false
+  damage: false
   join-message: false
   quit-message: false
+  death-message: false
   toggle-fly: true # auto fly mode when join if player has permission "lighthub.fly"
-  clear-inventory-on-exit: true # don't work if player is op
+  clear-inventory-on-exit: true
   health: 20.0
-  min-y: 0.0
+  min-y: 0.0 # 0.0 = disabled
   speed: 7.0
   allowed-commands:
     - spawn
@@ -17,8 +26,8 @@ settings:
 
 # All changes required restart plugin
 # If disabled, the following commands are available: "/hide", "/show"
-hider: # >1.13 only
-  enable: false
+hider:
+  enable: true
   slot: 4 # 0-8
   shown:
     material: GRAY_DYE

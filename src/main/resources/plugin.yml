@@ -1,12 +1,20 @@
 name: LightHub
-version: '${project.version}'
-description: '${description}'
-api-version: 1.13
+version: '2.1.0'
+api-version: 1.16
 
 main: ru.kainlight.lighthub.Main
-load: POSTWORLD
+
+authors: [ kainlight ]
+website: https://github.com/kainlighty
+
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib:2.0.20
+  - net.kyori:adventure-api:4.17.0
+  - net.kyori:adventure-text-minimessage:4.17.0
+  - net.kyori:adventure-platform-bukkit:4.3.4
 
 commands:
+  lighthub: {}
   lightgamemode:
     usage: /gm <number> (<username>)
     aliases:
@@ -15,16 +23,29 @@ commands:
     usage: /fly (<username>)
     aliases:
       - fly
-  lighthub: { }
+  lightspeed:
+    usage: /speed <value> (<username>)
+    aliases:
+      - speed
   lightspawn:
     aliases:
       - spawn
-  hide:
+  lighthide:
     description: Hide all players
-  show:
+    aliases:
+      - hide
+  lightshow:
     description: Show all players
+    aliases:
+      - show
 
 permissions:
+  lighthub.chat:
+    default: op
+  lighthub.chat.commands:
+    default: op
+  lighthub.chat.*:
+    default: op
   lighthub.visibility:
     default: true
   lighthub.gamemode:
@@ -38,6 +59,17 @@ permissions:
     children:
       lighthub.gamemode: true
       lighthub.gamemode.other: true
+  lighthub.speed:
+    default: op
+  lighthub.speed.other:
+    default: op
+    children:
+      lighthub.speed: true
+  lighthub.speed.*:
+    default: op
+    children:
+      lighthub.speed: true
+      lighthub.speed.other: true
   lighthub.fly:
     default: op
   lighthub.fly.other:
@@ -55,20 +87,6 @@ permissions:
     default: op
     children:
       lighthub.spawn: true
-  lighthub.inv.drop:
-    default: op
-  lighthub.inv.pickup:
-    default: op
-  lighthub.inv.move:
-    default: op
-  lighthub.inv.*:
-    default: op
-    children:
-      lighthub.inv.drop: true
-      lighthub.inv.pickup: true
-      lighthub.inv.move: true
-  lighthub.pickup:
-    default: op
   lighthub.block.break:
     default: op
   lighthub.block.place:
@@ -78,18 +96,32 @@ permissions:
     children:
       lighthub.block.break: true
       lighthub.block.place: true
-  lighthub.damage:
+  lighthub.inv.clear:
+    default: op
+  lighthub.inv.drop:
+    default: op
+  lighthub.inv.pickup:
+    default: op
+  lighthub.inv.move:
+    default: op
+  lighthub.inv.*:
+    default: op
+    children:
+      lighthub.inv.clear: true
+      lighthub.inv.drop: true
+      lighthub.inv.pickup: true
+      lighthub.inv.move: true
+  lighthub.reload:
     default: op
   lighthub.*:
     default: op
     children:
+      lighthub.reload: true
+      lighthub.chat.*: true
       lighthub.visibility: true
-      lighthub.gamemode: true
-      lighthub.gamemode.other: true
-      lighthub.fly: true
-      lighthub.fly.other: true
+      lighthub.gamemode.*: true
+      lighthub.fly.*: true
       lighthub.spawn: true
       lighthub.inv.*: true
-      lighthub.pickup: true
+      lighthub.speed.*: true
       lighthub.block.*: true
-      lighthub.damage: true
