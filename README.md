@@ -4,7 +4,7 @@
 
 ## › Functions
 
-- ### Chat Managment:
+- ### Chat Management:
   - ### Disabling the chat
   - ### Whitelist of allowed commands
 - ### Player Attributes:
