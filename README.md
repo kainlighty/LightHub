@@ -23,7 +23,7 @@
 - ### Teleportation:
   - ### Players are teleported to spawn when falling into the void
 
-## › Commands and Permission
+## › Commands and Permissions
 
 | Command          | Permission            |
 |------------------|-----------------------|
