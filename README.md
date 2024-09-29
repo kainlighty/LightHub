@@ -9,7 +9,7 @@
   - ### Whitelist of allowed commands
 - ### Player Attributes:
   - ### Damage is disabled
-  - ### Hunger is disable
+  - ### Hunger is disabled
   - ### Inventory is cleared on exit
 - ### Item Handling:
   - ### Dropping disabled
