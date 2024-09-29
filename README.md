@@ -6,7 +6,7 @@
 
 - ### Chat Managment:
   - ### Disabling the chat
-  - ### Отключение команд _(except for the specified ones)_
+  - ### Whitelist of allowed commands
 - ### Player Attributes:
   - ### Damage is disabled
   - ### Hunger is disable
