@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "ru.kainlight.lighthub"
-version = "2.1.0"
+version = "2.1.0.1"
 
 repositories {
     mavenCentral()
@@ -24,8 +24,8 @@ dependencies {
 
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 
-    implementation("net.kyori:adventure-api:4.17.0")
-    implementation("net.kyori:adventure-text-minimessage:4.17.0")
+    implementation("net.kyori:adventure-api:4.18.0")
+    implementation("net.kyori:adventure-text-minimessage:4.18.0")
     implementation("net.kyori:adventure-platform-bukkit:4.3.4")
 
     implementation(files(
